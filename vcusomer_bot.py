@@ -241,8 +241,12 @@ async def run_bot():
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
-if name == "__main__":
-    bot_thread = threading.Thread(target=lambda: asyncio.run(run_bot()))
-    bot_thread.start()
+if __name__ == "__main__":
+    # Запускаем Flask (Render сам назначит PORT)
     port = int(os.environ.get("PORT", 5000))
+    
+    # Запускаем бота в отдельном потоке
+    threading.Thread(target=lambda: asyncio.run(main()), daemon=True).start()
+    
+    # Запускаем веб-сервер
     app.run(host='0.0.0.0', port=port)
