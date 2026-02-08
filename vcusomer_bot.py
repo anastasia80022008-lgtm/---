@@ -173,7 +173,7 @@ async def calculate_result(callback: types.CallbackQuery, state: FSMContext):
     activity_coeffs = {"Сидячий образ жизни": 1.2, "Средняя активность": 1.55, "Высокая активность": 1.725}
     calories = brm * activity_coeffs[data['activity']]
     if data['goal'] == "Похудеть": calories -= 400
-        elif data['goal'] == "Набрать массу": calories += 400
+    elif data['goal'] == "Набрать массу": calories += 400
     daily_menu = generate_daily_menu(calories, data.get('allergies', []))
     if not daily_menu:
         await callback.message.edit_text("К сожалению, с вашими ограничениями мы не смогли подобрать меню из нашей базы. Попробуйте убрать некоторые аллергены или попробуйте позже, мы постоянно добавляем новые рецепты!")
