@@ -237,20 +237,26 @@ async def show_shop_list(callback: types.CallbackQuery, state: FSMContext):
 async def process_subscribe(callback: types.CallbackQuery):
     await callback.answer("Функция оплаты скоро будет добавлена!", show_alert=True)
 
+# --- ИСПРАВЛЕННЫЙ БЛОК ЗАПУСКА ---
+
 async def run_bot():
+    """Функция запуска бота"""
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
-# --- ВАЖНО: Этот блок должен быть ВНЕ if __name__ == "__main__" ---
+
 def run_bot_in_thread():
+    """Запуск асинхронного цикла в отдельном потоке"""
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.run_until_complete(main())
+    # Исправлено: вызываем run_bot(), а не main()
+    loop.run_until_complete(run_bot())
 
-# Запускаем поток бота сразу при загрузке модуля
+# Запускаем поток с ботом (чтобы работал параллельно с Flask)
 bot_thread = threading.Thread(target=run_bot_in_thread, daemon=True)
 bot_thread.start()
 
-# А этот блок останется для локального запуска (на ПК)
+# Блок для запуска сервера
 if __name__ == "__main__":
+    # Render автоматически передаст нужный порт в переменную PORT
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
