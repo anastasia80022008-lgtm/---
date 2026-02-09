@@ -256,23 +256,25 @@ async def process_subscribe(callback: types.CallbackQuery):
 # --- ИСПРАВЛЕННЫЙ БЛОК ЗАПУСКА ---
 
 async def run_bot():
-    """Функция запуска бота"""
+    """Функция запуска бота с исправлением ошибки потоков"""
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot)
+    # handle_signals=False обязателен для работы бота в потоке на Render
+    await dp.start_polling(bot, handle_signals=False)
 
 def run_bot_in_thread():
-    """Запуск асинхронного цикла в отдельном потоке"""
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    # Исправлено: вызываем run_bot(), а не main()
-    loop.run_until_complete(run_bot())
+    """Безопасный запуск бота в отдельном потоке"""
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(run_bot())
+    except Exception as e:
+        logging.error(f"Ошибка в потоке бота: {e}")
 
-# Запускаем поток с ботом (чтобы работал параллельно с Flask)
+# Запускаем поток с ботом ПЕРЕД запуском основного сервера
 bot_thread = threading.Thread(target=run_bot_in_thread, daemon=True)
 bot_thread.start()
 
-# Блок для запуска сервера
 if __name__ == "__main__":
-    # Render автоматически передаст нужный порт в переменную PORT
-    port = int(os.environ.get("PORT", 5000))
+    # Настройка порта для Render
+    port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
