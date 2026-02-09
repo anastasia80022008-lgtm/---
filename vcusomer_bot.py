@@ -240,13 +240,17 @@ async def process_subscribe(callback: types.CallbackQuery):
 async def run_bot():
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
+# --- ВАЖНО: Этот блок должен быть ВНЕ if __name__ == "__main__" ---
+def run_bot_in_thread():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(main())
 
+# Запускаем поток бота сразу при загрузке модуля
+bot_thread = threading.Thread(target=run_bot_in_thread, daemon=True)
+bot_thread.start()
+
+# А этот блок останется для локального запуска (на ПК)
 if __name__ == "__main__":
-    # Запускаем Flask (Render сам назначит PORT)
     port = int(os.environ.get("PORT", 5000))
-    
-    # Запускаем бота в отдельном потоке
-    threading.Thread(target=lambda: asyncio.run(main()), daemon=True).start()
-    
-    # Запускаем веб-сервер
     app.run(host='0.0.0.0', port=port)
