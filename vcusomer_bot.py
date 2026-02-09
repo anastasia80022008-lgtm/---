@@ -18,7 +18,7 @@ from aiogram.types import (
 )
 
 # --- НАСТРОЙКИ (ВАШИ ДАННЫЕ УЖЕ ЗДЕСЬ) ---
-TOKEN = os.environ.get('TOKEN', "8585043014:AAH-hXeqi7eK-tOJBVwYHg6hjghGxIZDIaY")
+TOKEN = os.environ.get('TOKEN', "8585043014:AAENR0EdGSFGxOOZwbCGVjibJBEkMVa9VR4")
 TELEGRAM_CHANNEL_URL = "https://t.me/+YOEpXfsmd9tiODQ6"
 
 # --- ИНИЦИАЛИЗАЦИЯ ---
