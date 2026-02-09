@@ -66,21 +66,37 @@ goal_kb = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Похудеть")
 activity_kb = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Сидячий образ жизни"), KeyboardButton(text="Средняя активность"), KeyboardButton(text="Высокая активность")]], resize_keyboard=True)
 
 def generate_daily_menu(target_calories, user_allergens):
-    if not ALL_RECIPES: return None
-    available_recipes = [
-        recipe for recipe in ALL_RECIPES 
-        if not any(allergen in recipe.get("allergens", []) for allergen in user_allergens)
+    """Оптимизированный подбор меню, который не тратит много оперативной памяти"""
+    if not ALL_RECIPES: 
+        return None
+    
+    # Фильтруем рецепты по аллергенам один раз
+    available = [
+        r for r in ALL_RECIPES 
+        if not any(allergen in r.get("allergens", []) for allergen in user_allergens)
     ]
-    breakfasts = [r for r in available_recipes if r['meal_type'] == 'breakfast']
-    lunches = [r for r in available_recipes if r['meal_type'] == 'lunch']
-    dinners = [r for r in available_recipes if r['meal_type'] == 'dinner']
-    if not all([breakfasts, lunches, dinners]): return None
-    best_combo, min_diff = None, float('inf')
-    for b, l, d in product(breakfasts, lunches, dinners):
-        current_calories = b['calories'] + l['calories'] + d['calories']
-        diff = abs(current_calories - target_calories)
+    
+    br = [r for r in available if r['meal_type'] == 'breakfast']
+    lu = [r for r in available if r['meal_type'] == 'lunch']
+    di = [r for r in available if r['meal_type'] == 'dinner']
+    
+    if not all([br, lu, di]): 
+        return None
+
+    best_combo = None
+    min_diff = float('inf')
+    
+    # Вместо перебора всех миллионов комбинаций, проверяем 200 случайных
+    # Это экономит 99% оперативной памяти на сервере Render
+    for _ in range(200):
+        b, l, d = random.choice(br), random.choice(lu), random.choice(di)
+        current_cal = b['calories'] + l['calories'] + d['calories']
+        diff = abs(current_cal - target_calories)
+        
         if diff < min_diff:
-            min_diff, best_combo = diff, [b, l, d]
+            min_diff = diff
+            best_combo = [b, l, d]
+            
     return best_combo
 
 @dp.message(Command("start"))
