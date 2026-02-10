@@ -68,7 +68,9 @@ def get_user_block(goal, activity):
     return mapping.get((goal, activity), "А")
 
 def generate_7_day_plan(user_block, user_allergens):
-    # Фильтруем рецепты по блоку и аллергиям
+    # Очищаем список аллергенов от лишних префиксов, если они есть
+    user_allergens = [a.replace("allg_", "") for a in user_allergens]
+    
     suitable = [
         r for r in ALL_RECIPES 
         if user_block in r.get("blocks", []) 
@@ -79,12 +81,16 @@ def generate_7_day_plan(user_block, user_allergens):
     lu = [r for r in suitable if r['meal_type'] == 'lunch']
     di = [r for r in suitable if r['meal_type'] == 'dinner']
 
+    # Логирование для отладки (вы увидите это в Render Logs)
+    logging.info(f"Блок {user_block}: Найдено {len(br)} завтр., {len(lu)} обед., {len(di)} уж.")
+
     if not br or not lu or not di:
+        # Если чего-то не хватает, бот напишет в логи, чего именно
+        logging.error(f"В Блоке {user_block} не хватает одного из типов еды!")
         return None
 
     plan = []
     for i in range(1, 8):
-        # Выбираем случайные блюда на каждый день
         plan.append({
             "day": i,
             "meals": [random.choice(br), random.choice(lu), random.choice(di)]
