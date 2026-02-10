@@ -1,272 +1,302 @@
 [
   {
-    "id": 1,
-    "name": "Овсянка на воде с ягодами",
+    "name": "Омлет классический с тостом",
     "meal_type": "breakfast",
-    "calories": 300,
-    "time": 10,
-    "allergens": [],
-    "ingredients": [{"name": "Овсяные хлопья", "quantity": "50 г"}, {"name": "Свежие ягоды", "quantity": "100 г"}]
+    "calories": 350,
+    "time": 7,
+    "blocks": ["А", "В"],
+    "allergens": ["lactose"],
+    "ingredients": [{"name": "Яйца", "quantity": "2 шт"}, {"name": "Молоко", "quantity": "20 мл"}, {"name": "Хлеб", "quantity": "1 тост"}],
+    "instructions": "Взбейте яйца с молоком. Готовьте под крышкой 4 минуты. Подавайте с пшеничным тостом."
   },
   {
-    "id": 2,
-    "name": "Греческий йогурт с медом и грецкими орехами",
+    "name": "Омлет (Без глютена/лактозы) с авокадо",
+    "meal_type": "breakfast",
+    "calories": 340,
+    "time": 7,
+    "blocks": ["А", "В"],
+    "allergens": [],
+    "ingredients": [{"name": "Яйца", "quantity": "2 шт"}, {"name": "Авокадо", "quantity": "1/4 шт"}, {"name": "Рисовый хлебец", "quantity": "1 шт"}],
+    "instructions": "Взбейте яйца с солью и водой. Жарьте на оливковом масле. Подавайте с авокадо и рисовым хлебцем."
+  },
+  {
+    "name": "Куриное филе с гречкой",
+    "meal_type": "lunch",
+    "calories": 420,
+    "time": 15,
+    "blocks": ["А"],
+    "allergens": [],
+    "ingredients": [{"name": "Филе курицы", "quantity": "120г"}, {"name": "Гречка", "quantity": "40г"}, {"name": "Огурец", "quantity": "1 шт"}],
+    "instructions": "Курицу нарежьте кубиком, обжарьте 8 мин. Гречку залейте кипятком на 10 мин."
+  },
+  {
+    "name": "Треска с брокколи",
+    "meal_type": "dinner",
+    "calories": 310,
+    "time": 15,
+    "blocks": ["А"],
+    "allergens": ["seafood"],
+    "ingredients": [{"name": "Треска", "quantity": "150г"}, {"name": "Брокколи", "quantity": "100г"}],
+    "instructions": "Запекайте рыбу и брокколи в фольге с лимоном 15 минут при 180 градусах."
+  },
+  {
+    "name": "Индейка с брокколи (Без морепродуктов)",
+    "meal_type": "dinner",
+    "calories": 330,
+    "time": 15,
+    "blocks": ["А"],
+    "allergens": [],
+    "ingredients": [{"name": "Филе индейки", "quantity": "150г"}, {"name": "Брокколи", "quantity": "100г"}],
+    "instructions": "Индейку нарежьте пластами, обжарьте или запеките с брокколи 15-20 минут."
+  },
+  {
+    "name": "Овсянка на молоке с ягодами",
     "meal_type": "breakfast",
     "calories": 380,
     "time": 5,
-    "allergens": ["lactose", "nuts"],
-    "ingredients": [{"name": "Греческий йогурт", "quantity": "200 г"}, {"name": "Грецкие орехи", "quantity": "30 г"}, {"name": "Мед", "quantity": "1 ч.л."}]
-  },
-  {
-    "id": 3,
-    "name": "Скрембл из 3-х яиц с томатами и шпинатом",
-    "meal_type": "breakfast",
-    "calories": 350,
-    "time": 12,
-    "allergens": [],
-    "ingredients": [{"name": "Яйца", "quantity": "3 шт"}, {"name": "Шпинат", "quantity": "50 г"}, {"name": "Томаты черри", "quantity": "5-6 шт"}]
-  },
-  {
-    "id": 4,
-    "name": "Тост из цельнозернового хлеба с авокадо",
-    "meal_type": "breakfast",
-    "calories": 280,
-    "time": 7,
-    "allergens": ["gluten"],
-    "ingredients": [{"name": "Цельнозерновой хлеб", "quantity": "2 ломтика"}, {"name": "Авокадо", "quantity": "0.5 шт"}]
-  },
-  {
-    "id": 5,
-    "name": "Творог 5% с бананом",
-    "meal_type": "breakfast",
-    "calories": 320,
-    "time": 5,
-    "allergens": ["lactose"],
-    "ingredients": [{"name": "Творог 5%", "quantity": "180 г"}, {"name": "Банан", "quantity": "1 шт"}]
-  },
-  {
-    "id": 6,
-    "name": "Рисовая каша на кокосовом молоке",
-    "meal_type": "breakfast",
-    "calories": 400,
-    "time": 25,
-    "allergens": [],
-    "ingredients": [{"name": "Рис круглый", "quantity": "50 г"}, {"name": "Кокосовое молоко", "quantity": "200 мл"}]
-  },
-  {
-    "id": 7,
-    "name": "Сырники со сметаной",
-    "meal_type": "breakfast",
-    "calories": 450,
-    "time": 20,
+    "blocks": ["Б"],
     "allergens": ["lactose", "gluten"],
-    "ingredients": [{"name": "Творог 9%", "quantity": "200 г"}, {"name": "Яйцо", "quantity": "1 шт"}, {"name": "Мука пшеничная", "quantity": "2 ст.л."}, {"name": "Сметана", "quantity": "1 ст.л."}]
+    "ingredients": [{"name": "Овсянка", "quantity": "50г"}, {"name": "Молоко", "quantity": "150мл"}, {"name": "Ягоды", "quantity": "30г"}],
+    "instructions": "Варите овсянку на молоке 3-5 мин или в микроволновке 2.5 мин. Добавьте ягоды."
   },
   {
-    "id": 8,
-    "name": "Гречневая каша с молоком",
+    "name": "Каша из киноа на кокосовом молоке",
     "meal_type": "breakfast",
-    "calories": 340,
-    "time": 20,
-    "allergens": ["lactose"],
-    "ingredients": [{"name": "Гречневая крупа", "quantity": "50 г"}, {"name": "Молоко", "quantity": "150 мл"}]
-  },
-  {
-    "id": 9,
-    "name": "Смузи (банан, шпинат, протеин)",
-    "meal_type": "breakfast",
-    "calories": 250,
-    "time": 5,
+    "calories": 390,
+    "time": 10,
+    "blocks": ["Б"],
     "allergens": [],
-    "ingredients": [{"name": "Банан", "quantity": "1 шт"}, {"name": "Шпинат", "quantity": "1 горсть"}, {"name": "Протеиновый порошок", "quantity": "1 скуп"}]
+    "ingredients": [{"name": "Киноа", "quantity": "50г"}, {"name": "Кокосовое молоко", "quantity": "150мл"}],
+    "instructions": "Киноа промойте, залейте молоком (1:2) и варите 10 мин до впитывания жидкости."
   },
   {
-    "id": 10,
-    "name": "Омлет с сыром и ветчиной",
-    "meal_type": "breakfast",
+    "name": "Индейка с булгуром и салатом",
+    "meal_type": "lunch",
+    "calories": 490,
+    "time": 15,
+    "blocks": ["Б"],
+    "allergens": ["gluten"],
+    "ingredients": [{"name": "Индейка", "quantity": "130г"}, {"name": "Булгур", "quantity": "50г"}, {"name": "Салат", "quantity": "50г"}],
+    "instructions": "Обжарьте индейку 10 мин. Булгур залейте кипятком на 15 мин. Подавайте с зеленью."
+  },
+  {
+    "name": "Творог 5% с яблоком",
+    "meal_type": "dinner",
+    "calories": 280,
+    "time": 2,
+    "blocks": ["Б"],
+    "allergens": ["lactose"],
+    "ingredients": [{"name": "Творог 5%", "quantity": "150г"}, {"name": "Яблоко", "quantity": "1 шт"}],
+    "instructions": "Выложите творог в тарелку, нарежьте яблоко дольками."
+  },
+  {
+    "name": "Салат с тунцом и маслом (Без лактозы)",
+    "meal_type": "dinner",
+    "calories": 310,
+    "time": 5,
+    "blocks": ["Б"],
+    "allergens": ["seafood"],
+    "ingredients": [{"name": "Тунец в с/с", "quantity": "150г"}, {"name": "Листья салата", "quantity": "50г"}, {"name": "Оливковое масло", "quantity": "1 ст.л."}],
+    "instructions": "Смешайте тунец из банки с зеленью и заправьте маслом."
+  },
+  {
+    "name": "Говядина с макаронами и томатами",
+    "meal_type": "lunch",
+    "calories": 560,
+    "time": 15,
+    "blocks": ["В"],
+    "allergens": ["gluten"],
+    "ingredients": [{"name": "Говядина", "quantity": "130г"}, {"name": "Макароны", "quantity": "60г"}, {"name": "Томаты", "quantity": "2 шт"}],
+    "instructions": "Отварите макароны. Мясо обжарьте с томатами 10 мин. Смешайте."
+  },
+  {
+    "name": "Запеченная рыба со спаржей",
+    "meal_type": "dinner",
     "calories": 420,
     "time": 15,
-    "allergens": ["lactose"],
-    "ingredients": [{"name": "Яйца", "quantity": "3 шт"}, {"name": "Сыр", "quantity": "30 г"}, {"name": "Ветчина", "quantity": "50 г"}]
+    "blocks": ["В"],
+    "allergens": ["seafood"],
+    "ingredients": [{"name": "Лосось/Треска", "quantity": "170г"}, {"name": "Спаржа", "quantity": "100г"}],
+    "instructions": "Рыбу и спаржу посолите, сбрызните маслом и запекайте в духовке 15 мин."
   },
   {
-    "id": 11,
-    "name": "Куриная грудка на гриле с гречкой и овощами",
-    "meal_type": "lunch",
-    "calories": 500,
-    "time": 25,
+    "name": "Куриная грудка гриль (Без морепродуктов)",
+    "meal_type": "dinner",
+    "calories": 440,
+    "time": 15,
+    "blocks": ["В"],
     "allergens": [],
-    "ingredients": [{"name": "Куриное филе", "quantity": "150 г"}, {"name": "Гречневая крупа", "quantity": "50 г"}, {"name": "Брокколи", "quantity": "100 г"}]
+    "ingredients": [{"name": "Куриная грудка", "quantity": "170г"}, {"name": "Спаржа/Салат", "quantity": "100г"}],
+    "instructions": "Обжарьте грудку на гриле или сковороде по 7 мин с каждой стороны. Подавайте с овощами."
   },
   {
-    "id": 12,
+    "name": "Сырники классические",
+    "meal_type": "breakfast",
+    "calories": 450,
+    "time": 12,
+    "blocks": ["Г"],
+    "allergens": ["lactose", "gluten"],
+    "ingredients": [{"name": "Творог 5%", "quantity": "200г"}, {"name": "Яйцо", "quantity": "1 шт"}, {"name": "Мука пшеничная", "quantity": "2 ст.л."}],
+    "instructions": "Смешайте творог, яйцо и муку. Жарьте на среднем огне по 4 мин с каждой стороны."
+  },
+  {
+    "name": "Сырники (Без глютена)",
+    "meal_type": "breakfast",
+    "calories": 440,
+    "time": 12,
+    "blocks": ["Г"],
+    "allergens": ["lactose"],
+    "ingredients": [{"name": "Творог 5%", "quantity": "200г"}, {"name": "Яйцо", "quantity": "1 шт"}, {"name": "Рисовая мука", "quantity": "2 ст.л."}],
+    "instructions": "Используйте рисовую муку вместо пшеничной. Обжаривайте до золотистой корчки."
+  },
+  {
+    "name": "Тосты с паштетом и авокадо (Без лактозы)",
+    "meal_type": "breakfast",
+    "calories": 460,
+    "time": 5,
+    "blocks": ["Г"],
+    "allergens": ["gluten"],
+    "ingredients": [{"name": "Хлеб", "quantity": "2 куска"}, {"name": "Паштет из индейки", "quantity": "50г"}, {"name": "Авокадо", "quantity": "1/2 шт"}],
+    "instructions": "Подсушите хлеб, намажьте паштетом, сверху выложите ломтики авокадо."
+  },
+  {
+    "name": "Куриный гуляш с рисом",
+    "meal_type": "lunch",
+    "calories": 520,
+    "time": 15,
+    "blocks": ["Г"],
+    "allergens": [],
+    "ingredients": [{"name": "Курица", "quantity": "150г"}, {"name": "Рис", "quantity": "60г"}, {"name": "Томатная паста", "quantity": "1 ст.л."}],
+    "instructions": "Курицу потушите с пастой 10 мин. Подавайте с вареным рисом."
+  },
+  {
+    "name": "Салат с яйцом и курицей",
+    "meal_type": "dinner",
+    "calories": 380,
+    "time": 10,
+    "blocks": ["Г"],
+    "allergens": [],
+    "ingredients": [{"name": "Куриное филе", "quantity": "150г"}, {"name": "Яйцо вареное", "quantity": "1 шт"}, {"name": "Зелень", "quantity": "100г"}],
+    "instructions": "Нарежьте готовую курицу и яйцо. Смешайте с зеленью и заправьте маслом."
+  },
+  {
     "name": "Паста Болоньезе",
     "meal_type": "lunch",
     "calories": 650,
-    "time": 30,
+    "time": 15,
+    "blocks": ["Д"],
     "allergens": ["gluten"],
-    "ingredients": [{"name": "Паста", "quantity": "80 г"}, {"name": "Говяжий фарш", "quantity": "100 г"}, {"name": "Томатный соус", "quantity": "150 г"}]
+    "ingredients": [{"name": "Фарш мясной", "quantity": "150г"}, {"name": "Макароны", "quantity": "80г"}, {"name": "Соус томатный", "quantity": "2 ст.л."}],
+    "instructions": "Отварите макароны. Фарш обжарьте 10 мин, добавьте соус. Смешайте."
   },
   {
-    "id": 13,
-    "name": "Запеченный лосось со спаржей и лимоном",
-    "meal_type": "lunch",
+    "name": "Запеченная курица с картофелем",
+    "meal_type": "dinner",
     "calories": 580,
-    "time": 20,
-    "allergens": ["seafood"],
-    "ingredients": [{"name": "Филе лосося", "quantity": "150 г"}, {"name": "Спаржа", "quantity": "150 г"}, {"name": "Лимон", "quantity": "0.5 шт"}]
-  },
-  {
-    "id": 14,
-    "name": "Чечевичный суп с копченостями",
-    "meal_type": "lunch",
-    "calories": 450,
-    "time": 35,
+    "time": 15,
+    "blocks": ["Д"],
     "allergens": [],
-    "ingredients": [{"name": "Чечевица", "quantity": "80 г"}, {"name": "Копченые ребрышки", "quantity": "100 г"}, {"name": "Картофель", "quantity": "1 шт"}]
+    "ingredients": [{"name": "Курица", "quantity": "150г"}, {"name": "Картофель", "quantity": "150г"}],
+    "instructions": "Нарежьте всё мелкими кубиками. Жарьте на сковороде под крышкой 15 минут до готовности."
   },
   {
-    "id": 15,
-    "name": "Плов с курицей",
-    "meal_type": "lunch",
+    "name": "Блины с творогом",
+    "meal_type": "breakfast",
+    "calories": 620,
+    "time": 15,
+    "blocks": ["Е"],
+    "allergens": ["lactose", "gluten"],
+    "ingredients": [{"name": "Мука", "quantity": "4 ст.л."}, {"name": "Молоко", "quantity": "150мл"}, {"name": "Творог", "quantity": "100г"}],
+    "instructions": "Испеките блины, заверните внутрь растертый творог с медом."
+  },
+  {
+    "name": "Блины на кокосовом молоке (Без лактозы)",
+    "meal_type": "breakfast",
     "calories": 600,
-    "time": 40,
-    "allergens": [],
-    "ingredients": [{"name": "Куриное бедро", "quantity": "150 г"}, {"name": "Рис длиннозерный", "quantity": "70 г"}, {"name": "Морковь", "quantity": "1 шт"}]
-  },
-  {
-    "id": 16,
-    "name": "Цезарь с курицей и сухариками",
-    "meal_type": "lunch",
-    "calories": 520,
-    "time": 20,
-    "allergens": ["gluten", "lactose"],
-    "ingredients": [{"name": "Куриное филе", "quantity": "120 г"}, {"name": "Салат Романо", "quantity": "100 г"}, {"name": "Сыр Пармезан", "quantity": "30 г"}, {"name": "Сухарики (гренки)", "quantity": "30 г"}]
-  },
-  {
-    "id": 17,
-    "name": "Бургер с говяжьей котлетой",
-    "meal_type": "lunch",
-    "calories": 700,
-    "time": 25,
-    "allergens": ["gluten", "lactose"],
-    "ingredients": [{"name": "Булочка для бургера", "quantity": "1 шт"}, {"name": "Говяжий фарш", "quantity": "150 г"}, {"name": "Сыр Чеддер", "quantity": "1 ломтик"}]
-  },
-  {
-    "id": 18,
-    "name": "Паста с креветками в сливочном соусе",
-    "meal_type": "lunch",
-    "calories": 680,
-    "time": 20,
-    "allergens": ["gluten", "lactose", "seafood"],
-    "ingredients": [{"name": "Паста", "quantity": "80 г"}, {"name": "Креветки", "quantity": "100 г"}, {"name": "Сливки 20%", "quantity": "50 мл"}]
-  },
-  {
-    "id": 19,
-    "name": "Фалафель с овощами в пите",
-    "meal_type": "lunch",
-    "calories": 550,
-    "time": 20,
+    "time": 15,
+    "blocks": ["Е"],
     "allergens": ["gluten"],
-    "ingredients": [{"name": "Пита", "quantity": "1 шт"}, {"name": "Фалафель (шарики)", "quantity": "4-5 шт"}, {"name": "Свежие овощи", "quantity": "100 г"}]
+    "ingredients": [{"name": "Мука", "quantity": "4 ст.л."}, {"name": "Кокосовое молоко", "quantity": "150мл"}, {"name": "Мед", "quantity": "1 ст.л."}],
+    "instructions": "Сделайте тесто на кокосовом молоке. Подавайте с медом или ягодами."
   },
   {
-    "id": 20,
-    "name": "Индейка с бурым рисом",
+    "name": "Плов с говядиной (Большая порция)",
     "meal_type": "lunch",
-    "calories": 480,
-    "time": 30,
+    "calories": 780,
+    "time": 20,
+    "blocks": ["Е", "И"],
     "allergens": [],
-    "ingredients": [{"name": "Филе индейки", "quantity": "150 г"}, {"name": "Бурый рис", "quantity": "60 г"}]
+    "ingredients": [{"name": "Говядина", "quantity": "150г"}, {"name": "Рис", "quantity": "100г (сухого)"}],
+    "instructions": "Обжарьте мясо с морковью. Добавьте рис и воду (1:2), томите до готовности."
   },
   {
-    "id": 21,
-    "name": "Греческий салат с сыром Фета",
+    "name": "Свиная вырезка (Вместо рыбы)",
     "meal_type": "dinner",
-    "calories": 380,
+    "calories": 650,
     "time": 15,
-    "allergens": ["lactose"],
-    "ingredients": [{"name": "Помидоры", "quantity": "2 шт"}, {"name": "Огурец", "quantity": "1 шт"}, {"name": "Сыр Фета", "quantity": "50 г"}, {"name": "Маслины", "quantity": "1 горсть"}]
-  },
-  {
-    "id": 22,
-    "name": "Салат с тунцом, яйцом и стручковой фасолью",
-    "meal_type": "dinner",
-    "calories": 420,
-    "time": 15,
-    "allergens": ["seafood"],
-    "ingredients": [{"name": "Тунец консервированный", "quantity": "1 банка"}, {"name": "Яйцо вареное", "quantity": "2 шт"}, {"name": "Стручковая фасоль", "quantity": "100 г"}]
-  },
-  {
-    "id": 23,
-    "name": "Овощное рагу с курицей",
-    "meal_type": "dinner",
-    "calories": 400,
-    "time": 30,
+    "blocks": ["Е"],
     "allergens": [],
-    "ingredients": [{"name": "Куриное филе", "quantity": "120 г"}, {"name": "Кабачок", "quantity": "1 шт"}, {"name": "Болгарский перец", "quantity": "1 шт"}]
+    "ingredients": [{"name": "Свинина", "quantity": "170г"}, {"name": "Рис", "quantity": "80г"}],
+    "instructions": "Свинину нарежьте стейками, обжарьте по 5 мин. Подавайте с рисом."
   },
   {
-    "id": 24,
-    "name": "Запеканка из творога без муки",
-    "meal_type": "dinner",
-    "calories": 350,
-    "time": 35,
-    "allergens": ["lactose"],
-    "ingredients": [{"name": "Творог 5%", "quantity": "200 г"}, {"name": "Яйцо", "quantity": "1 шт"}, {"name": "Манная крупа", "quantity": "1 ст.л."}]
-  },
-  {
-    "id": 25,
-    "name": "Салат Капрезе",
-    "meal_type": "dinner",
-    "calories": 300,
+    "name": "Яичница с беконом (Завтрак чемпиона)",
+    "meal_type": "breakfast",
+    "calories": 850,
     "time": 10,
-    "allergens": ["lactose"],
-    "ingredients": [{"name": "Помидоры", "quantity": "2 шт"}, {"name": "Сыр Моцарелла", "quantity": "100 г"}, {"name": "Базилик", "quantity": "1 пучок"}]
+    "blocks": ["Ж", "И"],
+    "allergens": ["gluten"],
+    "ingredients": [{"name": "Яйца", "quantity": "3 шт"}, {"name": "Бекон", "quantity": "50г"}, {"name": "Хлеб", "quantity": "2 куска"}],
+    "instructions": "Обжарьте бекон, залейте яйцами. Подавайте с подсушенными тостами."
   },
   {
-    "id": 26,
-    "name": "Запеченная скумбрия с травами",
+    "name": "Стейк из лосося (Для массы/Без лактозы)",
     "meal_type": "dinner",
-    "calories": 500,
-    "time": 25,
-    "allergens": ["seafood"],
-    "ingredients": [{"name": "Скумбрия", "quantity": "1 шт"}, {"name": "Розмарин", "quantity": "1 веточка"}]
-  },
-  {
-    "id": 27,
-    "name": "Салат с куриной печенью и карамелизированной грушей",
-    "meal_type": "dinner",
-    "calories": 450,
-    "time": 20,
-    "allergens": [],
-    "ingredients": [{"name": "Куриная печень", "quantity": "150 г"}, {"name": "Груша", "quantity": "1 шт"}, {"name": "Листья салата", "quantity": "100 г"}]
-  },
-  {
-    "id": 28,
-    "name": "Овощи на гриле (перец, баклажан, кабачок)",
-    "meal_type": "dinner",
-    "calories": 250,
-    "time": 20,
-    "allergens": [],
-    "ingredients": [{"name": "Баклажан", "quantity": "1 шт"}, {"name": "Кабачок", "quantity": "1 шт"}, {"name": "Болгарский перец", "quantity": "1 шт"}]
-  },
-  {
-    "id": 29,
-    "name": "Салат с авокадо, креветками и грейпфрутом",
-    "meal_type": "dinner",
-    "calories": 480,
+    "calories": 750,
     "time": 15,
+    "blocks": ["Ж", "И"],
     "allergens": ["seafood"],
-    "ingredients": [{"name": "Креветки", "quantity": "150 г"}, {"name": "Авокадо", "quantity": "1 шт"}, {"name": "Грейпфрут", "quantity": "0.5 шт"}]
+    "ingredients": [{"name": "Лосось", "quantity": "200г"}, {"name": "Рис/Киноа", "quantity": "80г"}],
+    "instructions": "Запекайте лосось в духовке 15 минут. Подавайте с гарниром."
   },
   {
-    "id": 30,
-    "name": "Салат с киноа, авокадо и миндалем",
+    "name": "Творог 9% с орехами и медом",
     "meal_type": "dinner",
-    "calories": 430,
+    "calories": 680,
+    "time": 3,
+    "blocks": ["Ж"],
+    "allergens": ["lactose", "nuts"],
+    "ingredients": [{"name": "Творог 9%", "quantity": "250г"}, {"name": "Орехи", "quantity": "30г"}, {"name": "Мед", "quantity": "1 ст.л."}],
+    "instructions": "Смешайте творог со сметаной, посыпьте орехами и полейте медом."
+  },
+  {
+    "name": "Говяжий стейк (Вместо рыбы)",
+    "meal_type": "dinner",
+    "calories": 800,
     "time": 15,
-    "allergens": ["nuts"],
-    "ingredients": [{"name": "Киноа (готовая)", "quantity": "100 г"}, {"name": "Авокадо", "quantity": "0.5 шт"}, {"name": "Миндаль", "quantity": "20 г"}]
+    "blocks": ["И"],
+    "allergens": [],
+    "ingredients": [{"name": "Говядина", "quantity": "250г"}, {"name": "Картофель", "quantity": "200г"}],
+    "instructions": "Обжарьте стейк до нужной прожарки. Картофель отварите или запеките."
+  },
+  {
+    "name": "Каша на молоке + 2 яйца",
+    "meal_type": "breakfast",
+    "calories": 700,
+    "time": 10,
+    "blocks": ["З"],
+    "allergens": ["lactose", "gluten"],
+    "ingredients": [{"name": "Овсянка", "quantity": "80г"}, {"name": "Молоко", "quantity": "200мл"}, {"name": "Яйца вареные", "quantity": "2 шт"}],
+    "instructions": "Сварите кашу. Яйца отварите вкрутую. Подавайте вместе."
+  },
+  {
+    "name": "Курица с рисом (Макси-порция)",
+    "meal_type": "lunch",
+    "calories": 850,
+    "time": 15,
+    "blocks": ["З"],
+    "allergens": [],
+    "ingredients": [{"name": "Курица", "quantity": "200г"}, {"name": "Рис", "quantity": "100г"}],
+    "instructions": "Курицу обжарьте. Рис отварите. Смешайте с соевым соусом (по желанию)."
   }
 ]
