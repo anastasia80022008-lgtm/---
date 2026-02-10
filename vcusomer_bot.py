@@ -274,20 +274,38 @@ async def back_to_days_handler(callback: types.CallbackQuery, state: FSMContext)
     
     await callback.message.edit_text(f"Выберите день (Блок {block}):", reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
 
-# --- ЗАПУСК ---
+# --- ИСПРАВЛЕННЫЙ БЛОК ЗАПУСКА ---
 
 async def run_bot():
-    await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, handle_signals=False)
+    """Функция запуска бота с очисткой старых соединений"""
+    try:
+        # Принудительно удаляем старые привязки (webhook), чтобы не было конфликта
+        await bot.delete_webhook(drop_pending_updates=True)
+        logging.info("Бот начал опрос Telegram (Polling)...")
+        await dp.start_polling(bot, handle_signals=False)
+    except Exception as e:
+        logging.error(f"Ошибка в работе бота: {e}")
 
 def run_bot_in_thread():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(run_bot())
+    """Запуск асинхронного цикла в отдельном потоке с проверкой на дубликаты"""
+    # Проверяем, не запущен ли уже поток с именем BotThread
+    for thread in threading.enumerate():
+        if thread.name == "BotThread":
+            logging.info("Поток бота уже работает, пропускаем запуск дубликата.")
+            return
 
-if not any(thread.name == "BotThread" for thread in threading.enumerate()):
-    threading.Thread(target=run_bot_in_thread, name="BotThread", daemon=True).start()
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(run_bot())
+    except Exception as e:
+        logging.error(f"Критическая ошибка в потоке: {e}")
+
+# Запускаем поток бота с уникальным именем
+bot_thread = threading.Thread(target=run_bot_in_thread, name="BotThread", daemon=True)
+bot_thread.start()
 
 if __name__ == "__main__":
+    # Локальный запуск (будет работать, если вы запустите файл сами)
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
