@@ -18,7 +18,7 @@ from aiogram.types import (
 )
 
 # --- НАСТРОЙКИ ---
-TOKEN = os.environ.get('TOKEN', "8585043014:AAENR0EdGSFGxOOZwbCGVjibJBEkMVa9VR4")
+TOKEN = os.environ.get('TOKEN', "8585043014:AAG1dnEgTV65np--Bt0rAA9Wc64LiBta9FA")
 TELEGRAM_CHANNEL_URL = "https://t.me/+YOEpXfsmd9tiODQ6"
 
 # --- ИНИЦИАЛИЗАЦИЯ ---
@@ -103,7 +103,7 @@ def generate_daily_menu(target_calories, user_allergens):
     if best_combo:
         total_cals = sum(r['calories'] for r in best_combo)
         logging.info(f"Найдена лучшая комбинация с калорийностью {total_cals} (разница: {min_diff}).")
-return best_combo
+        return best_combo
 
 # --- ОБРАБОТЧИКИ КОМАНД И СООБЩЕНИЙ ---
 
@@ -188,11 +188,12 @@ async def process_allergies(callback: types.CallbackQuery, state: FSMContext):
     allergy = callback.data.split("_")[1]
     user_data = await state.get_data()
     
-    if allergy == "none": user_data['allergies'] = []
+    if allergy == "none":
+        user_data['allergies'] = []
     elif allergy in user_data['allergies']:
-    user_data['allergies'].remove(allergy)
-remove(allergy)
-    else: user_data['allergies'].append(allergy)
+        user_data['allergies'].remove(allergy)
+    else:
+        user_data['allergies'].append(allergy)
         
     await state.update_data(allergies=user_data['allergies'])
     await callback.answer(f"Выбор обновлен. Текущие исключения: {', '.join(user_data['allergies']) or 'нет'}")
@@ -288,8 +289,8 @@ async def show_shop_list(callback: types.CallbackQuery, state: FSMContext):
         "А пока загляни на наш основной канал с лайфхаками быстрой готовки!",
         parse_mode="Markdown",
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text="Перейти в канал 'Вкусомер' 📢", url=TELEGRAM_CHANNEL_URL)],
-    [InlineKeyboardButton(text="Оформить подписку (290 руб/мес)", callback_data="subscribe")]
+    [InlineKeyboardButton(text="Перейти в канал 'Вкусомер' 📢", url=TELEGRAM_CHANNEL_URL)],
+            [InlineKeyboardButton(text="Оформить подписку (290 руб/мес)", callback_data="subscribe")]
         ])
     )
     await callback.answer()
