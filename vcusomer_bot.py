@@ -18,7 +18,7 @@ from aiogram.types import (
 )
 
 # --- НАСТРОЙКИ ---
-TOKEN = os.environ.get('TOKEN', "8585043014:AAG1dnEgTV65np--Bt0rAA9Wc64LiBta9FA")
+TOKEN = os.environ.get('TOKEN', "8585043014:AAENR0EdGSFGxOOZwbCGVjibJBEkMVa9VR4")
 TELEGRAM_CHANNEL_URL = "https://t.me/+YOEpXfsmd9tiODQ6"
 
 # --- ИНИЦИАЛИЗАЦИЯ ---
@@ -305,6 +305,7 @@ async def run_bot():
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
+# ЭТО ИСПРАВЛЕННАЯ СТРОКА
 if name == "__main__":
     bot_thread = threading.Thread(target=lambda: asyncio.run(run_bot()))
     bot_thread.start()
