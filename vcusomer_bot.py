@@ -17,7 +17,7 @@ from aiogram.types import (
 )
 
 # --- НАСТРОЙКИ ---
-TOKEN = "8585043014:AAENR0EdGSFGxOOZwbCGVjibJBEkMVa9VR4"
+TOKEN = "8585043014:AAFQsH6ESYByucOgXq07WttwnYW4Pp0Vh78"
 TELEGRAM_CHANNEL_URL = "https://t.me/+YOEpXfsmd9tiODQ6"
 
 logging.basicConfig(level=logging.INFO)
