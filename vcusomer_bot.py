@@ -152,9 +152,7 @@ async def proc_w(message: types.Message, state: FSMContext):
         [InlineKeyboardButton(text="❌ Орехи", callback_data="allg_nuts"), InlineKeyboardButton(text="❌ Морепродукты", callback_data="allg_seafood")],
         [InlineKeyboardButton(text="✅ Готово / Я всё ем", callback_data="calc_7_days")]
     ])
-    await message.answer("Есть ли ограничения в еде? Отметь или нажми 'Готово':", reply_markup=kb)
-    await state.set_state(Survey.allergies)
-    await state.update_data(allergies=[])
+   # --- ВСТАВЛЯТЬ ОТСЮДА И ДО КОНЦА ФАЙЛА ---
 
 @dp.callback_query(F.data.startswith("allg_"))
 async def proc_allg(callback: types.CallbackQuery, state: FSMContext):
@@ -167,42 +165,86 @@ async def proc_allg(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer(f"Обновлено: {allg}")
 
 @dp.callback_query(F.data == "calc_7_days")
-async def calculate_7(callback: types.CallbackQuery, state: FSMContext):
+async def calculate_result_and_plan(callback: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
+    
+    # 1. РАСЧЕТ КАЛОРИЙ (Миффлин-Сан Жеор)
+    try:
+        weight = float(str(data['weight']).replace(',', '.'))
+        height = float(data['height'])
+        age = float(data['age'])
+    except Exception:
+        return await callback.message.answer("Ошибка в данных. Нажмите /start заново.")
+
+    bmr = (10 * weight) + (6.25 * height) - (5 * age)
+    bmr += 5 if data['gender'] == "Мужской" else -161
+    
+    coeffs = {"Сидячий образ жизни": 1.2, "Средняя активность": 1.55, "Высокая активность": 1.725}
+    calories = bmr * coeffs.get(data['activity'], 1.2)
+    
+    if data['goal'] == "Похудеть": calories -= 400
+    elif data['goal'] == "Набрать массу": calories += 400
+    
+    # 2. ПОДБОР ПЛАНА
     block = get_user_block(data['goal'], data['activity'])
     plan = generate_7_day_plan(block, data['allergies'])
     
     if not plan:
-        return await callback.message.answer("К сожалению, под ваши фильтры пока нет рецептов. Попробуйте выбрать 'Я всё ем'.")
+        return await callback.message.answer("Рецепты под ваши фильтры скоро добавятся. Попробуйте выбрать 'Я всё ем'.")
+
+    await state.update_data(plan=plan, target_calories=int(calories))
     
-    await state.update_data(plan=plan)
-    buttons = [[InlineKeyboardButton(text=f"День {i}", callback_data=f"day_{i}")] for i in range(1, 8)]
-    buttons.append([InlineKeyboardButton(text="🛒 Весь список продуктов на 7 дней", callback_data="shop_all_7")])
+    days_buttons = [[InlineKeyboardButton(text=f"День {i}", callback_data=f"view_day_{i}")] for i in range(1, 8)]
+    days_buttons.append([InlineKeyboardButton(text="🛒 Список продуктов на 7 дней", callback_data="shop_all_7")])
     
     await callback.message.edit_text(
-        f"✅ Твой план на 7 дней (Блок {block}) готов!\nНажми на нужный день, чтобы увидеть рецепты и инструкции:",
-        reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons)
+        f"✅ Расчет готов!\nТвоя норма: *{int(calories)} ккал/день*.\n\n"
+        f"Я составил меню на 7 дней (Блок {block}).\nНажми на день, чтобы увидеть блюда и кнопки с рецептами:",
+        parse_mode="Markdown",
+        reply_markup=InlineKeyboardMarkup(inline_keyboard=days_buttons)
     )
     await state.set_state(Survey.viewing_plan)
 
-@dp.callback_query(F.data.startswith("day_"))
-async def show_day(callback: types.CallbackQuery, state: FSMContext):
-    day_num = int(callback.data.split("_")[1])
+@dp.callback_query(F.data.startswith("view_day_"))
+async def show_day_menu(callback: types.CallbackQuery, state: FSMContext):
+    day_num = int(callback.data.split("_")[2])
     data = await state.get_data()
     day_data = next(d for d in data['plan'] if d['day'] == day_num)
     
-    msg = f"📅 **МЕНЮ: ДЕНЬ {day_num}**\n\n"
-    for m in day_data['meals']:
-        msg += f"🍴 **{m['meal_type'].upper()}: {m['name']}**\n"
-        msg += f"🛒 *Ингредиенты:* {', '.join([i['name'] + ' (' + i['quantity'] + ')' for i in m['ingredients']])}\n"
-        msg += f"👨‍🍳 *Как готовить:* {m['instructions']}\n"
-        msg += f"⏱ {m['time']} мин | 🔥 {m['calories']} ккал\n\n"
+    msg = f"📅 **ДЕНЬ {day_num}**\n\n"
+    buttons = []
     
-    kb = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⬅️ Назад к выбору дней", callback_data="back_to_days")]])
-    await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=kb)
+    for idx, m in enumerate(day_data['meals']):
+        msg += f"🍴 **{m['meal_type'].upper()}**: {m['name']}\n"
+        msg += f"⏱ {m['time']} мин | 🔥 {m['calories']} ккал\n\n"
+        # Кнопка для каждого приема пищи
+        buttons.append([InlineKeyboardButton(text=f"👨‍🍳 Рецепт: {m['meal_type'].capitalize()}", callback_data=f"recipe_{day_num}_{idx}")])
+    
+    buttons.append([InlineKeyboardButton(text="⬅️ Назад к выбору дней", callback_data="back_to_days")])
+    
+    await callback.message.edit_text(msg, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
+
+@dp.callback_query(F.data.startswith("recipe_"))
+async def show_meal_recipe(callback: types.CallbackQuery, state: FSMContext):
+    parts = callback.data.split("_")
+    day_num, meal_idx = int(parts[1]), int(parts[2])
+    
+    data = await state.get_data()
+    day_data = next(d for d in data['plan'] if d['day'] == day_num)
+    meal = day_data['meals'][meal_idx]
+    
+    recipe_msg = f"👨‍🍳 **РЕЦЕПТ: {meal['name'].upper()}**\n\n"
+    recipe_msg += "**Ингредиенты:**\n"
+    for ing in meal['ingredients']:
+        recipe_msg += f"— {ing['name']} ({ing['quantity']})\n"
+    
+    recipe_msg += f"\n**Как готовить:**\n{meal['instructions']}"
+    
+    kb = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⬅️ Назад к меню дня", callback_data=f"view_day_{day_num}")]])
+    await callback.message.edit_text(recipe_msg, parse_mode="Markdown", reply_markup=kb)
 
 @dp.callback_query(F.data == "shop_all_7")
-async def shop_all(callback: types.CallbackQuery, state: FSMContext):
+async def shop_all_7(callback: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     plan = data.get('plan')
     
@@ -211,51 +253,41 @@ async def shop_all(callback: types.CallbackQuery, state: FSMContext):
         for meal in day['meals']:
             for ing in meal['ingredients']:
                 name = ing['name']
-                if name in full_list: full_list[name].append(ing['quantity'])
-                else: full_list[name] = [ing['quantity']]
+                qty = ing['quantity']
+                if name in full_list: full_list[name].append(qty)
+                else: full_list[name] = [qty]
     
-    msg = "🛒 **ВАШ СПИСОК ПРОДУКТОВ НА 7 ДНЕЙ:**\n\n"
+    msg = "🛒 **СПИСОК ПРОДУКТОВ НА ВСЕ 7 ДНЕЙ:**\n\n"
     for name, quantities in full_list.items():
-        msg += f"— {name}: {', '.join(quantities)}\n"
+        msg += f"— **{name}**: {', '.join(quantities)}\n"
     
     await callback.message.answer(msg, parse_mode="Markdown")
     await callback.answer()
 
 @dp.callback_query(F.data == "back_to_days")
-async def back_days(callback: types.CallbackQuery):
-    buttons = [[InlineKeyboardButton(text=f"День {i}", callback_data=f"day_{i}")] for i in range(1, 8)]
-    buttons.append([InlineKeyboardButton(text="🛒 Весь список продуктов на 7 дней", callback_data="shop_all_7")])
-    await callback.message.edit_text("Выбери день:", reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
+async def back_to_days_handler(callback: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    block = get_user_block(data['goal'], data['activity'])
+    
+    buttons = [[InlineKeyboardButton(text=f"День {i}", callback_data=f"view_day_{i}")] for i in range(1, 8)]
+    buttons.append([InlineKeyboardButton(text="🛒 Список продуктов на 7 дней", callback_data="shop_all_7")])
+    
+    await callback.message.edit_text(f"Выберите день (Блок {block}):", reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
 
-# --- ИСПРАВЛЕННЫЙ БЛОК ЗАПУСКА (Заменяем отсюда и до конца) ---
+# --- ЗАПУСК ---
 
 async def run_bot():
-    """Функция запуска бота с исправлением конфликта обновлений"""
-    try:
-        # Удаляем вебхук и старые запросы, чтобы не было конфликта
-        await bot.delete_webhook(drop_pending_updates=True)
-        logging.info("Polling запущен...")
-        await dp.start_polling(bot, handle_signals=False)
-    except Exception as e:
-        logging.error(f"Ошибка в работе polling: {e}")
+    await bot.delete_webhook(drop_pending_updates=True)
+    await dp.start_polling(bot, handle_signals=False)
 
 def run_bot_in_thread():
-    """Безопасный запуск цикла событий в отдельном потоке"""
-    try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(run_bot())
-    except Exception as e:
-        logging.error(f"Критическая ошибка в потоке бота: {e}")
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(run_bot())
 
-# Запускаем поток бота ТОЛЬКО ЕСЛИ он еще не запущен
-# Это защищает от ошибки 'Conflict: terminated by other getUpdates request'
 if not any(thread.name == "BotThread" for thread in threading.enumerate()):
-    bot_thread = threading.Thread(target=run_bot_in_thread, name="BotThread", daemon=True)
-    bot_thread.start()
+    threading.Thread(target=run_bot_in_thread, name="BotThread", daemon=True).start()
 
 if __name__ == "__main__":
-    # Настройка порта для Render
     port = int(os.environ.get("PORT", 5000))
-    # Запуск веб-сервера (Flask)
     app.run(host='0.0.0.0', port=port)
