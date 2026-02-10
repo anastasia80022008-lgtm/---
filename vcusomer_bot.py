@@ -189,7 +189,8 @@ async def process_allergies(callback: types.CallbackQuery, state: FSMContext):
     user_data = await state.get_data()
     
     if allergy == "none": user_data['allergies'] = []
-    elif allergy in user_data['allergies']: user_data['allergies'].
+    elif allergy in user_data['allergies']:
+    user_data['allergies'].remove(allergy)
 remove(allergy)
     else: user_data['allergies'].append(allergy)
         
