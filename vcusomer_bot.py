@@ -17,7 +17,7 @@ from aiogram.types import (
 )
 
 # --- НАСТРОЙКИ ---
-TOKEN = os.environ.get('TOKEN', "8585043014:AAENR0EdGSFGxOOZwbCGVjibJBEkMVa9VR4")
+TOKEN = os.environ.get('TOKEN', "8585043014:AAHV5GmcePLn5wsGMUM5sr9OEQNftWwKHZA")
 TELEGRAM_CHANNEL_URL = "https://t.me/+YOEpXfsmd9tiODQ6"
 
 logging.basicConfig(level=logging.INFO)
@@ -227,18 +227,35 @@ async def back_days(callback: types.CallbackQuery):
     buttons.append([InlineKeyboardButton(text="🛒 Весь список продуктов на 7 дней", callback_data="shop_all_7")])
     await callback.message.edit_text("Выбери день:", reply_markup=InlineKeyboardMarkup(inline_keyboard=buttons))
 
-# --- ЗАПУСК ---
+# --- ИСПРАВЛЕННЫЙ БЛОК ЗАПУСКА (Заменяем отсюда и до конца) ---
+
 async def run_bot():
-    await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, handle_signals=False)
+    """Функция запуска бота с исправлением конфликта обновлений"""
+    try:
+        # Удаляем вебхук и старые запросы, чтобы не было конфликта
+        await bot.delete_webhook(drop_pending_updates=True)
+        logging.info("Polling запущен...")
+        await dp.start_polling(bot, handle_signals=False)
+    except Exception as e:
+        logging.error(f"Ошибка в работе polling: {e}")
 
 def run_bot_in_thread():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(run_bot())
+    """Безопасный запуск цикла событий в отдельном потоке"""
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(run_bot())
+    except Exception as e:
+        logging.error(f"Критическая ошибка в потоке бота: {e}")
 
-threading.Thread(target=run_bot_in_thread, daemon=True).start()
+# Запускаем поток бота ТОЛЬКО ЕСЛИ он еще не запущен
+# Это защищает от ошибки 'Conflict: terminated by other getUpdates request'
+if not any(thread.name == "BotThread" for thread in threading.enumerate()):
+    bot_thread = threading.Thread(target=run_bot_in_thread, name="BotThread", daemon=True)
+    bot_thread.start()
 
 if __name__ == "__main__":
+    # Настройка порта для Render
     port = int(os.environ.get("PORT", 5000))
+    # Запуск веб-сервера (Flask)
     app.run(host='0.0.0.0', port=port)
