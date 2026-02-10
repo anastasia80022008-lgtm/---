@@ -1,127 +1,272 @@
 [
   {
     "id": 1,
-    "name": "Овсянка с ягодами и орехами",
+    "name": "Овсянка на воде с ягодами",
     "meal_type": "breakfast",
-    "calories": 350,
+    "calories": 300,
     "time": 10,
-    "allergens": ["nuts"],
-    "ingredients": [
-      {"name": "Овсяные хлопья", "quantity": "50 г"},
-      {"name": "Молоко или вода", "quantity": "150 мл"},
-      {"name": "Свежие ягоды", "quantity": "50 г"},
-      {"name": "Грецкие орехи", "quantity": "20 г"}
-    ]
+    "allergens": [],
+    "ingredients": [{"name": "Овсяные хлопья", "quantity": "50 г"}, {"name": "Свежие ягоды", "quantity": "100 г"}]
   },
   {
     "id": 2,
-    "name": "Скрембл с авокадо и томатами",
+    "name": "Греческий йогурт с медом и грецкими орехами",
     "meal_type": "breakfast",
-    "calories": 400,
-    "time": 12,
-    "allergens": [],
-    "ingredients": [
-      {"name": "Яйца", "quantity": "3 шт"},
-      {"name": "Авокадо", "quantity": "0.5 шт"},
-      {"name": "Томаты черри", "quantity": "5-6 шт"},
-      {"name": "Цельнозерновой хлеб", "quantity": "1 ломтик"}
-    ]
+    "calories": 380,
+    "time": 5,
+    "allergens": ["lactose", "nuts"],
+    "ingredients": [{"name": "Греческий йогурт", "quantity": "200 г"}, {"name": "Грецкие орехи", "quantity": "30 г"}, {"name": "Мед", "quantity": "1 ч.л."}]
   },
   {
     "id": 3,
-    "name": "Куриная грудка на гриле с киноа",
-    "meal_type": "lunch",
-    "calories": 550,
-    "time": 20,
+    "name": "Скрембл из 3-х яиц с томатами и шпинатом",
+    "meal_type": "breakfast",
+    "calories": 350,
+    "time": 12,
     "allergens": [],
-    "ingredients": [
-      {"name": "Куриное филе", "quantity": "150 г"},
-      {"name": "Киноа (сухая)", "quantity": "60 г"},
-      {"name": "Огурец", "quantity": "1 шт"},
-      {"name": "Оливковое масло", "quantity": "1 ст.л."}
-    ]
+    "ingredients": [{"name": "Яйца", "quantity": "3 шт"}, {"name": "Шпинат", "quantity": "50 г"}, {"name": "Томаты черри", "quantity": "5-6 шт"}]
   },
   {
     "id": 4,
-    "name": "Суп-пюре из чечевицы",
-    "meal_type": "lunch",
-    "calories": 450,
-    "time": 25,
-    "allergens": [],
-    "ingredients": [
-      {"name": "Красная чечевица", "quantity": "100 г"},
-      {"name": "Морковь", "quantity": "1 шт"},
-      {"name": "Лук репчатый", "quantity": "1 шт"},
-      {"name": "Овощной бульон", "quantity": "500 мл"}
-    ]
+    "name": "Тост из цельнозернового хлеба с авокадо",
+    "meal_type": "breakfast",
+    "calories": 280,
+    "time": 7,
+    "allergens": ["gluten"],
+    "ingredients": [{"name": "Цельнозерновой хлеб", "quantity": "2 ломтика"}, {"name": "Авокадо", "quantity": "0.5 шт"}]
   },
   {
     "id": 5,
-    "name": "Салат с тунцом, нутом и овощами",
-    "meal_type": "dinner",
-    "calories": 400,
-    "time": 10,
-    "allergens": ["seafood"],
-    "ingredients": [
-      {"name": "Тунец консервированный", "quantity": "1 банка"},
-      {"name": "Нут консервированный", "quantity": "100 г"},
-      {"name": "Листья салата", "quantity": "50 г"},
-      {"name": "Болгарский перец", "quantity": "0.5 шт"}
-    ]
-  },
-  {
-    "id": 6,
-    "name": "Запеченная треска со спаржей",
-    "meal_type": "dinner",
-    "calories": 480,
-    "time": 20,
-    "allergens": ["seafood"],
-    "ingredients": [
-      {"name": "Филе трески", "quantity": "180 г"},
-      {"name": "Спаржа", "quantity": "150 г"},
-      {"name": "Лимон", "quantity": "0.5 шт"},
-      {"name": "Чеснок", "quantity": "1 зубчик"}
-    ]
-  },
-  {
-    "id": 7,
-    "name": "Творог с фруктами и медом",
+    "name": "Творог 5% с бананом",
     "meal_type": "breakfast",
     "calories": 320,
     "time": 5,
     "allergens": ["lactose"],
-    "ingredients": [
-      {"name": "Творог 5%", "quantity": "180 г"},
-      {"name": "Банан", "quantity": "0.5 шт"},
-      {"name": "Мед", "quantity": "1 ч.л."}
-    ]
+    "ingredients": [{"name": "Творог 5%", "quantity": "180 г"}, {"name": "Банан", "quantity": "1 шт"}]
+  },
+  {
+    "id": 6,
+    "name": "Рисовая каша на кокосовом молоке",
+    "meal_type": "breakfast",
+    "calories": 400,
+    "time": 25,
+    "allergens": [],
+    "ingredients": [{"name": "Рис круглый", "quantity": "50 г"}, {"name": "Кокосовое молоко", "quantity": "200 мл"}]
+  },
+  {
+    "id": 7,
+    "name": "Сырники со сметаной",
+    "meal_type": "breakfast",
+    "calories": 450,
+    "time": 20,
+    "allergens": ["lactose", "gluten"],
+    "ingredients": [{"name": "Творог 9%", "quantity": "200 г"}, {"name": "Яйцо", "quantity": "1 шт"}, {"name": "Мука пшеничная", "quantity": "2 ст.л."}, {"name": "Сметана", "quantity": "1 ст.л."}]
   },
   {
     "id": 8,
-    "name": "Паста с креветками в томатном соусе",
-    "meal_type": "lunch",
-    "calories": 600,
+    "name": "Гречневая каша с молоком",
+    "meal_type": "breakfast",
+    "calories": 340,
     "time": 20,
-    "allergens": ["gluten", "seafood"],
-    "ingredients": [
-      {"name": "Паста из твердых сортов", "quantity": "80 г"},
-      {"name": "Креветки очищенные", "quantity": "100 г"},
-      {"name": "Томаты в собственном соку", "quantity": "200 г"},
-      {"name": "Чеснок", "quantity": "1 зубчик"}
-    ]
+    "allergens": ["lactose"],
+    "ingredients": [{"name": "Гречневая крупа", "quantity": "50 г"}, {"name": "Молоко", "quantity": "150 мл"}]
   },
   {
     "id": 9,
+    "name": "Смузи (банан, шпинат, протеин)",
+    "meal_type": "breakfast",
+    "calories": 250,
+    "time": 5,
+    "allergens": [],
+    "ingredients": [{"name": "Банан", "quantity": "1 шт"}, {"name": "Шпинат", "quantity": "1 горсть"}, {"name": "Протеиновый порошок", "quantity": "1 скуп"}]
+  },
+  {
+    "id": 10,
+    "name": "Омлет с сыром и ветчиной",
+    "meal_type": "breakfast",
+    "calories": 420,
+    "time": 15,
+    "allergens": ["lactose"],
+    "ingredients": [{"name": "Яйца", "quantity": "3 шт"}, {"name": "Сыр", "quantity": "30 г"}, {"name": "Ветчина", "quantity": "50 г"}]
+  },
+  {
+    "id": 11,
+    "name": "Куриная грудка на гриле с гречкой и овощами",
+    "meal_type": "lunch",
+    "calories": 500,
+    "time": 25,
+    "allergens": [],
+    "ingredients": [{"name": "Куриное филе", "quantity": "150 г"}, {"name": "Гречневая крупа", "quantity": "50 г"}, {"name": "Брокколи", "quantity": "100 г"}]
+  },
+  {
+    "id": 12,
+    "name": "Паста Болоньезе",
+    "meal_type": "lunch",
+    "calories": 650,
+    "time": 30,
+    "allergens": ["gluten"],
+    "ingredients": [{"name": "Паста", "quantity": "80 г"}, {"name": "Говяжий фарш", "quantity": "100 г"}, {"name": "Томатный соус", "quantity": "150 г"}]
+  },
+  {
+    "id": 13,
+    "name": "Запеченный лосось со спаржей и лимоном",
+    "meal_type": "lunch",
+    "calories": 580,
+    "time": 20,
+    "allergens": ["seafood"],
+    "ingredients": [{"name": "Филе лосося", "quantity": "150 г"}, {"name": "Спаржа", "quantity": "150 г"}, {"name": "Лимон", "quantity": "0.5 шт"}]
+  },
+  {
+    "id": 14,
+    "name": "Чечевичный суп с копченостями",
+    "meal_type": "lunch",
+    "calories": 450,
+    "time": 35,
+    "allergens": [],
+    "ingredients": [{"name": "Чечевица", "quantity": "80 г"}, {"name": "Копченые ребрышки", "quantity": "100 г"}, {"name": "Картофель", "quantity": "1 шт"}]
+  },
+  {
+    "id": 15,
+    "name": "Плов с курицей",
+    "meal_type": "lunch",
+    "calories": 600,
+    "time": 40,
+    "allergens": [],
+    "ingredients": [{"name": "Куриное бедро", "quantity": "150 г"}, {"name": "Рис длиннозерный", "quantity": "70 г"}, {"name": "Морковь", "quantity": "1 шт"}]
+  },
+  {
+    "id": 16,
+    "name": "Цезарь с курицей и сухариками",
+    "meal_type": "lunch",
+    "calories": 520,
+    "time": 20,
+    "allergens": ["gluten", "lactose"],
+    "ingredients": [{"name": "Куриное филе", "quantity": "120 г"}, {"name": "Салат Романо", "quantity": "100 г"}, {"name": "Сыр Пармезан", "quantity": "30 г"}, {"name": "Сухарики (гренки)", "quantity": "30 г"}]
+  },
+  {
+    "id": 17,
+    "name": "Бургер с говяжьей котлетой",
+    "meal_type": "lunch",
+    "calories": 700,
+    "time": 25,
+    "allergens": ["gluten", "lactose"],
+    "ingredients": [{"name": "Булочка для бургера", "quantity": "1 шт"}, {"name": "Говяжий фарш", "quantity": "150 г"}, {"name": "Сыр Чеддер", "quantity": "1 ломтик"}]
+  },
+  {
+    "id": 18,
+    "name": "Паста с креветками в сливочном соусе",
+    "meal_type": "lunch",
+    "calories": 680,
+    "time": 20,
+    "allergens": ["gluten", "lactose", "seafood"],
+    "ingredients": [{"name": "Паста", "quantity": "80 г"}, {"name": "Креветки", "quantity": "100 г"}, {"name": "Сливки 20%", "quantity": "50 мл"}]
+  },
+  {
+    "id": 19,
+    "name": "Фалафель с овощами в пите",
+    "meal_type": "lunch",
+    "calories": 550,
+    "time": 20,
+    "allergens": ["gluten"],
+    "ingredients": [{"name": "Пита", "quantity": "1 шт"}, {"name": "Фалафель (шарики)", "quantity": "4-5 шт"}, {"name": "Свежие овощи", "quantity": "100 г"}]
+  },
+  {
+    "id": 20,
+    "name": "Индейка с бурым рисом",
+    "meal_type": "lunch",
+    "calories": 480,
+    "time": 30,
+    "allergens": [],
+    "ingredients": [{"name": "Филе индейки", "quantity": "150 г"}, {"name": "Бурый рис", "quantity": "60 г"}]
+  },
+  {
+    "id": 21,
     "name": "Греческий салат с сыром Фета",
     "meal_type": "dinner",
     "calories": 380,
     "time": 15,
     "allergens": ["lactose"],
-    "ingredients": [
-      {"name": "Сыр Фета", "quantity": "50 г"},
-      {"name": "Огурец", "quantity": "1 шт"},
-      {"name": "Помидор", "quantity": "2 шт"},
-      {"name": "Маслины", "quantity": "10 шт"}
-    ]
+    "ingredients": [{"name": "Помидоры", "quantity": "2 шт"}, {"name": "Огурец", "quantity": "1 шт"}, {"name": "Сыр Фета", "quantity": "50 г"}, {"name": "Маслины", "quantity": "1 горсть"}]
+  },
+  {
+    "id": 22,
+    "name": "Салат с тунцом, яйцом и стручковой фасолью",
+    "meal_type": "dinner",
+    "calories": 420,
+    "time": 15,
+    "allergens": ["seafood"],
+    "ingredients": [{"name": "Тунец консервированный", "quantity": "1 банка"}, {"name": "Яйцо вареное", "quantity": "2 шт"}, {"name": "Стручковая фасоль", "quantity": "100 г"}]
+  },
+  {
+    "id": 23,
+    "name": "Овощное рагу с курицей",
+    "meal_type": "dinner",
+    "calories": 400,
+    "time": 30,
+    "allergens": [],
+    "ingredients": [{"name": "Куриное филе", "quantity": "120 г"}, {"name": "Кабачок", "quantity": "1 шт"}, {"name": "Болгарский перец", "quantity": "1 шт"}]
+  },
+  {
+    "id": 24,
+    "name": "Запеканка из творога без муки",
+    "meal_type": "dinner",
+    "calories": 350,
+    "time": 35,
+    "allergens": ["lactose"],
+    "ingredients": [{"name": "Творог 5%", "quantity": "200 г"}, {"name": "Яйцо", "quantity": "1 шт"}, {"name": "Манная крупа", "quantity": "1 ст.л."}]
+  },
+  {
+    "id": 25,
+    "name": "Салат Капрезе",
+    "meal_type": "dinner",
+    "calories": 300,
+    "time": 10,
+    "allergens": ["lactose"],
+    "ingredients": [{"name": "Помидоры", "quantity": "2 шт"}, {"name": "Сыр Моцарелла", "quantity": "100 г"}, {"name": "Базилик", "quantity": "1 пучок"}]
+  },
+  {
+    "id": 26,
+    "name": "Запеченная скумбрия с травами",
+    "meal_type": "dinner",
+    "calories": 500,
+    "time": 25,
+    "allergens": ["seafood"],
+    "ingredients": [{"name": "Скумбрия", "quantity": "1 шт"}, {"name": "Розмарин", "quantity": "1 веточка"}]
+  },
+  {
+    "id": 27,
+    "name": "Салат с куриной печенью и карамелизированной грушей",
+    "meal_type": "dinner",
+    "calories": 450,
+    "time": 20,
+    "allergens": [],
+    "ingredients": [{"name": "Куриная печень", "quantity": "150 г"}, {"name": "Груша", "quantity": "1 шт"}, {"name": "Листья салата", "quantity": "100 г"}]
+  },
+  {
+    "id": 28,
+    "name": "Овощи на гриле (перец, баклажан, кабачок)",
+    "meal_type": "dinner",
+    "calories": 250,
+    "time": 20,
+    "allergens": [],
+    "ingredients": [{"name": "Баклажан", "quantity": "1 шт"}, {"name": "Кабачок", "quantity": "1 шт"}, {"name": "Болгарский перец", "quantity": "1 шт"}]
+  },
+  {
+    "id": 29,
+    "name": "Салат с авокадо, креветками и грейпфрутом",
+    "meal_type": "dinner",
+    "calories": 480,
+    "time": 15,
+    "allergens": ["seafood"],
+    "ingredients": [{"name": "Креветки", "quantity": "150 г"}, {"name": "Авокадо", "quantity": "1 шт"}, {"name": "Грейпфрут", "quantity": "0.5 шт"}]
+  },
+  {
+    "id": 30,
+    "name": "Салат с киноа, авокадо и миндалем",
+    "meal_type": "dinner",
+    "calories": 430,
+    "time": 15,
+    "allergens": ["nuts"],
+    "ingredients": [{"name": "Киноа (готовая)", "quantity": "100 г"}, {"name": "Авокадо", "quantity": "0.5 шт"}, {"name": "Миндаль", "quantity": "20 г"}]
   }
 ]
