@@ -19,7 +19,7 @@ from aiogram.types import (
 # --- НАСТРОЙКИ ---
 TOKEN = "8585043014:AAFQsH6ESYByucOgXq07WttwnYW4Pp0Vh78"
 TELEGRAM_CHANNEL_URL = "https://t.me/+YOEpXfsmd9tiODQ6"
-PAID_BOT_URL = "https://t.me/TasteMeterPlus_bot"
+PAID_BOT_URL = "t.me/TasteMeterPlus_bot"
 
 logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
