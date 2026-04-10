@@ -47,7 +47,7 @@ class Survey(StatesGroup):
     weight = State()
     allergies = State()
 
-# --- ЛОГИКА УМНОГО СУММИРОВАНИЯ ---
+# --- УМНАЯ ЛОГИКА СУММИРОВАНИЯ ---
 def aggregate_ingredients(plan):
     shopping_list = {}
     for day in plan:
@@ -56,7 +56,7 @@ def aggregate_ingredients(plan):
                 name = ing['name'].lower().strip()
                 qty_str = str(ing['quantity']).lower().strip()
                 
-                # Ищем число
+                # Ищем числа в строке (например "2" или "150")
                 match = re.search(r"(\d+[\.,]?\d*)", qty_str)
                 unit = re.sub(r"(\d+[\.,]?\d*)", "", qty_str).strip()
                 
@@ -68,6 +68,7 @@ def aggregate_ingredients(plan):
                         if shopping_list[name]["unit"] == unit:
                             shopping_list[name]["val"] += val
                         else:
+                            # Если единицы измерения разные, пишем через плюс
                             shopping_list[name]["val"] = f"{shopping_list[name]['val']} {shopping_list[name]['unit']} + {val}"
                 else:
                     if name not in shopping_list:
@@ -85,16 +86,16 @@ def get_user_block(goal, activity):
 # --- ОБРАБОТЧИКИ ---
 
 @app.route('/')
-def index(): return "Система Вкусомер онлайн"
+def index(): return "Бот Вкусомер запущен и готов к работе"
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.clear()
     welcome = (
-        "<b>Здравствуйте! Приветствую вас в системе Вкусомер.</b> 😊\n\n"
+        "<b>Здравствуйте! Приветствую вас в системе осознанного питания Вкусомер.</b> 😊\n\n"
         "Я ваш персональный помощник по планированию рациона. Моя цель — сделать ваше питание простым, вкусным и понятным. В этой версии я использую нашу базу проверенных рецептов, которые идеально сбалансированы экспертами.\n\n"
         "<b>Вот наш план действий:</b>\n"
-        "1. Мы определим ваши параметры и рассчитаем точную индивидуальную норму калорий.\n"
+        "1. Мы определим ваши параметры и рассчитыем точную индивидуальную норму калорий.\n"
         "2. Я подберу для вас разнообразное меню на семь дней, которое не будет повторяться.\n"
         "3. В конце вы получите полный список продуктов, в котором я сам объединю все ингредиенты (например, посчитаю общее число яиц или граммы мяса).\n\n"
         "<b>Важное уточнение:</b> в нашей Плюс-версии вы сможете просто присылать фотографии своей еды, и Искусственный Интеллект сам определит калории, а также будет общаться с вами как личный психолог-диетолог.\n\n"
@@ -178,12 +179,6 @@ async def proc_allg(call: types.CallbackQuery, state: FSMContext):
         await state.update_data(plan=plan, norma=norma)
         await call.message.answer("<b>Поздравляю! Вы успешно прошли тест, и ваш личный профиль был создан.</b> ✅", parse_mode="HTML")
         
-        # Расчет времени до цели
-        if data.get('target_w') and data['goal'] in ["Похудеть", "Набрать массу"]:
-            diff = abs(int(data['target_w']) - w)
-            days = diff * 10 
-            await call.message.answer(f"Исходя из ваших данных, вы достигнете веса {data['target_w']} кг примерно через <b>{days} дней</b>!", parse_mode="HTML")
-
         res_text = (
             f"Ваша индивидуальная норма калорий составляет <b>{norma} ккал</b> в день.\n\n"
             "Я подготовил для вас оптимальное меню на семь дней из нашей базы рецептов. "
