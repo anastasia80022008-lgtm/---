@@ -47,7 +47,7 @@ class Survey(StatesGroup):
     weight = State()
     allergies = State()
 
-# --- УМНАЯ ЛОГИКА СУММИРОВАНИЯ ---
+# --- ЛОГИКА ОБЪЕДИНЕНИЯ ПРОДУКТОВ ---
 def aggregate_ingredients(plan):
     shopping_list = {}
     for day in plan:
@@ -56,7 +56,6 @@ def aggregate_ingredients(plan):
                 name = ing['name'].lower().strip()
                 qty_str = str(ing['quantity']).lower().strip()
                 
-                # Ищем числа (целые или дробные)
                 match = re.search(r"(\d+[\.,]?\d*)", qty_str)
                 unit = re.sub(r"(\d+[\.,]?\d*)", "", qty_str).strip()
                 
@@ -132,7 +131,7 @@ async def proc_tw(message: types.Message, state: FSMContext):
 @dp.message(Survey.activity)
 async def proc_act(message: types.Message, state: FSMContext):
     await state.update_data(activity=message.text)
-    await message.answer("Укажите ваш полный возраст (количество лет). Напишите цифрой: 🎂", reply_markup=ReplyKeyboardRemove())
+    await message.answer("Укажите ваш полный возраст (количество лет). Напишите числом: 🎂", reply_markup=ReplyKeyboardRemove())
     await state.set_state(Survey.age)
 
 @dp.message(Survey.age)
@@ -228,7 +227,7 @@ async def back_days(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     btns = [[InlineKeyboardButton(text=f"День {i}", callback_data=f"day_{i}")] for i in range(1, 8)]
     btns.append([InlineKeyboardButton(text="🛒 Список продуктов на 7 дней", callback_data="shop_7")])
-    await call.message.edit_text(f"Выберите интересующий день (Норма: {data['norma']} ккал):", reply_markup=InlineKeyboardMarkup(inline_keyboard=btns))
+    await call.message.edit_text(f"Выберите день (Норма: {data['norma']} ккал):", reply_markup=InlineKeyboardMarkup(inline_keyboard=btns))
 
 # --- ЗАПУСК ---
 def run_flask():
