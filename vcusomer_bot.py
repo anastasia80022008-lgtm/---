@@ -52,11 +52,8 @@ def aggregate_ingredients(plan):
             for ing in meal['ingredients']:
                 name = ing['name'].lower().strip()
                 qty_str = str(ing['quantity']).lower().strip()
-                
-                # Ищем цифры (целые или дробные)
                 match = re.search(r"(\d+[\.,]?\d*)", qty_str)
                 unit = re.sub(r"(\d+[\.,]?\d*)", "", qty_str).strip()
-                
                 if match:
                     val = float(match.group(1).replace(",", "."))
                     if name not in shopping_list:
@@ -70,34 +67,24 @@ def aggregate_ingredients(plan):
                     shopping_list[name] = {"val": qty_str, "unit": ""}
     return shopping_list
 
-# --- ЛОГИКА ОПРЕДЕЛЕНИЯ БЛОКА ---
-def get_user_block(goal, activity):
-    mapping = {
-        ("Похудеть", "Сидячий"): "А", ("Похудеть", "Средний"): "Б", ("Похудеть", "Высокий"): "В",
-        ("Поддерживать вес", "Сидячий"): "Г", ("Поддерживать вес", "Средний"): "Д", ("Поддерживать вес", "Высокий"): "Е",
-        ("Набрать массу", "Сидячий"): "Ж", ("Набрать массу", "Средний"): "З", ("Набрать массу", "Высокий"): "И"
-    }
-    return mapping.get((goal, activity), "А")
-
 # --- ОБРАБОТЧИКИ ---
 
 @app.route('/')
-def index(): return "Бот работает"
+def index(): return "Бот запущен и готов к работе"
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.clear()
     welcome = (
-        "Добро пожаловать во Вкусомер! 🥗\n\n"
-        "Я помогу тебе составить план питания на ближайшие 7 дней. В этой версии я использую готовую базу рецептов, "
-        "чтобы ты мог быстро начать свой путь к здоровью.\n\n"
-        "Что ты получишь сейчас:\n"
-        "— Расчет твоей индивидуальной нормы калорий.\n"
-        "— Готовое меню на неделю, которое не повторяется.\n"
-        "— Список продуктов для магазина, где все ингредиенты уже сложены за тебя.\n\n"
-        "А в нашей Плюс-версии тебе будет помогать настоящий Искусственный Интеллект: он умеет считать калории по фото твоей тарелки, "
-        "общаться с тобой как личный психолог и придумывать рецепты из любых остатков в холодильнике!\n\n"
-        "Давай начнем с настройки твоего профиля. Укажи свой пол: 👤"
+        "Здравствуйте! Приветствую вас в системе Вкусомер. 🥗\n\n"
+        "Я ваш персональный помощник по планированию питания. В этой версии я работаю на основе проверенной научной базы данных и готовых рецептов.\n\n"
+        "Что мы с вами сейчас сделаем:\n"
+        "1. Мы проведем подробный тест ваших параметров (рост, вес, возраст).\n"
+        "2. Я рассчитаю вашу точную норму калорий для достижения цели.\n"
+        "3. Я составлю для вас меню на целых 7 дней, которое не будет повторяться.\n"
+        "4. В конце я выдам вам готовый список продуктов для магазина, где все ингредиенты уже посчитаны и суммированы за вас.\n\n"
+        "Кстати, если вам захочется еще больше магии — например, считать калории по одной фотографии тарелки или общаться с ИИ-диетологом в живом чате — вы всегда сможете перейти в нашу Плюс-версию (ссылка будет в конце).\\n\n"
+        "Давайте приступим к созданию вашего профиля! Укажите, пожалуйста, ваш пол: 👤"
     )
     kb = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Мужской"), KeyboardButton(text="Женский")]], resize_keyboard=True)
     await message.answer(welcome, reply_markup=kb)
@@ -107,53 +94,53 @@ async def cmd_start(message: types.Message, state: FSMContext):
 async def proc_gender(message: types.Message, state: FSMContext):
     await state.update_data(gender=message.text)
     kb = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Похудеть"), KeyboardButton(text="Набрать массу"), KeyboardButton(text="Поддерживать вес")]], resize_keyboard=True)
-    await message.answer("Понял тебя. Какая у нас сейчас главная цель? 🎯", reply_markup=kb)
+    await message.answer("Отлично. Теперь выберите вашу главную цель на ближайшее время: 🎯", reply_markup=kb)
     await state.set_state(Survey.goal)
 
 @dp.message(Survey.goal)
 async def proc_goal(message: types.Message, state: FSMContext):
     await state.update_data(goal=message.text)
     if message.text in ["Похудеть", "Набрать массу"]:
-        await message.answer("Это отличная цель! К какому весу в идеале мы хотим прийти? Напиши цифру в килограммах: 🏁", reply_markup=ReplyKeyboardRemove())
+        await message.answer("Понял вас. Напишите, пожалуйста, к какому весу в идеале вы стремитесь? Введите цифру в килограммах: 🏁", reply_markup=ReplyKeyboardRemove())
         await state.set_state(Survey.target_w)
     else:
         await state.set_state(Survey.activity)
         kb = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Сидячий"), KeyboardButton(text="Средний"), KeyboardButton(text="Высокий")]], resize_keyboard=True)
-        await message.answer("Как много ты двигаешься в течение дня? Выбери свой уровень активности: 🏃‍♂️", reply_markup=kb)
+        await message.answer("Ваша физическая активность очень важна для расчета. Как много вы двигаетесь в течение дня? 🏃‍♂️", reply_markup=kb)
 
 @dp.message(Survey.target_w)
 async def proc_tw(message: types.Message, state: FSMContext):
     await state.update_data(target_w=message.text)
     kb = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Сидячий"), KeyboardButton(text="Средний"), KeyboardButton(text="Высокий")]], resize_keyboard=True)
-    await message.answer("Принято. Теперь укажи свой уровень физической активности: 🏃‍♂️", reply_markup=kb)
+    await message.answer("Принято. Какая у вас физическая активность в течение недели? 🏃‍♂️", reply_markup=kb)
     await state.set_state(Survey.activity)
 
 @dp.message(Survey.activity)
 async def proc_act(message: types.Message, state: FSMContext):
     await state.update_data(activity=message.text)
-    await message.answer("Сколько тебе полных лет? Напиши числом: 🎂", reply_markup=ReplyKeyboardRemove())
+    await message.answer("Укажите ваш полный возраст (количество лет): 🎂", reply_markup=ReplyKeyboardRemove())
     await state.set_state(Survey.age)
 
 @dp.message(Survey.age)
 async def proc_age(message: types.Message, state: FSMContext):
     await state.update_data(age=int(message.text))
-    await message.answer("Какой у тебя рост в сантиметрах? 📏")
+    await message.answer("Теперь напишите ваш рост в сантиметрах: 📏")
     await state.set_state(Survey.height)
 
 @dp.message(Survey.height)
 async def proc_h(message: types.Message, state: FSMContext):
     await state.update_data(height=int(message.text))
-    await message.answer("И последний шаг: твой текущий вес в килограммах? ⚖️")
+    await message.answer("И последний параметр: ваш текущий вес в килограммах: ⚖️")
     await state.set_state(Survey.weight)
 
 @dp.message(Survey.weight)
 async def proc_w(message: types.Message, state: FSMContext):
     await state.update_data(weight=int(message.text))
     kb = InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="❌ Лактоза", callback_data="allg_lactose"), InlineKeyboardButton(text="❌ Глютен", callback_data="allg_gluten")],
-        [InlineKeyboardButton(text="✅ У меня нет аллергий / Готово", callback_data="allg_done")]
+        [InlineKeyboardButton(text="Лактоза (Молоко)", callback_data="allg_lactose"), InlineKeyboardButton(text="Глютен (Мучное)", callback_data="allg_gluten")],
+        [InlineKeyboardButton(text="Нет ограничений / Готово", callback_data="allg_done")]
     ])
-    await message.answer("Есть ли у тебя какие-то аллергии или ограничения в еде? Отметь их или нажми Готово: ⚠️", reply_markup=kb)
+    await message.answer("Есть ли у вас пищевые аллергии или продукты, которые вы не едите? Отметьте их или нажмите Готово: ⚠️", reply_markup=kb)
     await state.set_state(Survey.allergies)
     await state.update_data(user_allg=[])
 
@@ -161,18 +148,15 @@ async def proc_w(message: types.Message, state: FSMContext):
 async def proc_allg(call: types.CallbackQuery, state: FSMContext):
     if call.data == "allg_done":
         data = await state.get_data()
-        # Расчет калорий
         w, h, a, gen = data['weight'], data['height'], data['age'], data['gender']
+        # Формула Миффлина
         bmr = (10 * w) + (6.25 * h) - (5 * a) + (5 if gen == "Мужской" else -161)
         norma = int(bmr * 1.3)
         if data['goal'] == "Похудеть": norma -= 400
         
         # Генерация плана
-        block = get_user_block(data['goal'], data['activity'])
-        allgs = data['user_allg']
-        suitable = [r for r in ALL_RECIPES if block in r.get("blocks", []) and not any(a in r.get("allergens", []) for a in allgs)]
+        suitable = [r for r in ALL_RECIPES if not any(a in r.get("allergens", []) for a in data['user_allg'])]
         if not suitable: suitable = ALL_RECIPES
-        
         br = [r for r in suitable if r['meal_type'] == 'breakfast']
         lu = [r for r in suitable if r['meal_type'] == 'lunch']
         di = [r for r in suitable if r['meal_type'] == 'dinner']
@@ -180,79 +164,62 @@ async def proc_allg(call: types.CallbackQuery, state: FSMContext):
         plan = [{"day": i, "meals": [random.choice(br), random.choice(lu), random.choice(di)]} for i in range(1, 8)]
         await state.update_data(plan=plan, norma=norma)
         
-        await call.message.answer("✅ Тест успешно пройден! Твой профиль создан.")
+        await call.message.answer("Поздравляю! Тест успешно завершен, и ваш профиль создан. ✅")
         
         res_text = (
-            f"Твоя индивидуальная норма калорий составляет {norma} ккал в день. "
-            f"Для твоей цели {data['goal']} я подобрал оптимальный рацион на неделю из нашей базы.\n\n"
-            "Помни, что в Плюс-версии нашего бота (ссылка в конце) расчеты делает Искусственный Интеллект, "
-            "который подстраивается под твои вкусы в реальном времени!\n\n"
-            "Выбери день, чтобы посмотреть меню:"
+            f"Ваша индивидуальная норма калорий: {norma} ккал в день. "
+            f"Я составил для вас полноценный рацион на 7 дней. Это база, которая поможет вам прийти к результату.\n\n"
+            "Напоминаю, что в Плюс-версии нашего бота расчеты делает живой интеллект, который умеет распознавать еду даже по фото вашей тарелки!\n\n"
+            "Выберите интересующий вас день:"
         )
-        
         btns = [[InlineKeyboardButton(text=f"День {i}", callback_data=f"day_{i}")] for i in range(1, 8)]
-        btns.append([InlineKeyboardButton(text="🛒 Список продуктов на неделю", callback_data="shop_7")])
+        btns.append([InlineKeyboardButton(text="🛒 Список продуктов на 7 дней", callback_data="shop_7")])
         await call.message.answer(res_text, reply_markup=InlineKeyboardMarkup(inline_keyboard=btns))
     else:
         allg = call.data.replace("allg_", "")
         d = await state.get_data(); current = d['user_allg']
         if allg not in current: current.append(allg)
-        await state.update_data(user_allg=current); await call.answer(f"Ограничение добавлено: {allg}")
+        await state.update_data(user_allg=current); await call.answer(f"Добавлено: {allg}")
 
-# --- МЕНЮ ДНЯ ---
+# --- МЕНЮ ---
 
 @dp.callback_query(F.data.startswith("day_"))
 async def show_day(call: types.CallbackQuery, state: FSMContext):
     day_num = int(call.data.split("_")[1])
     data = await state.get_data(); day_data = data['plan'][day_num-1]
-    
-    msg = f"Меню на день {day_num}. Твоя цель сегодня — {data['norma']} ккал.\n\n"
+    msg = f"Ваше меню на день номер {day_num}. Цель: {data['norma']} ккал.\n\n"
     btns = []
     for idx, m in enumerate(day_data['meals']):
-        msg += f"🍴 {m['meal_type'].upper()}: {m['name']} ({m['calories']} ккал)\n"
-        btns.append([InlineKeyboardButton(text=f"Рецепт: {m['name']}", callback_data=f"rec_{day_num}_{idx}")])
-    btns.append([InlineKeyboardButton(text="⬅️ Назад к списку дней", callback_data="back_days")])
+        msg += f"Блюдо: {m['name']} ({m['calories']} ккал)\n"
+        btns.append([InlineKeyboardButton(text=f"Как готовить: {m['name']}", callback_data=f"rec_{day_num}_{idx}")])
+    btns.append([InlineKeyboardButton(text="⬅️ Назад к выбору дней", callback_data="back_days")])
     await call.message.edit_text(msg, reply_markup=InlineKeyboardMarkup(inline_keyboard=btns))
 
 @dp.callback_query(F.data.startswith("rec_"))
 async def show_rec(call: types.CallbackQuery, state: FSMContext):
     parts = call.data.split("_"); data = await state.get_data()
     meal = data['plan'][int(parts[1])-1]['meals'][int(parts[2])]
-    
-    txt = (
-        f"Готовим блюдо: {meal['name']}\n\n"
-        "Тебе понадобятся следующие ингредиенты:\n"
-    )
+    txt = f"Полный рецепт блюда: {meal['name']}\n\nНеобходимые ингредиенты:\n"
     txt += "\n".join([f"— {i['name']} ({i['quantity']})" for i in meal['ingredients']])
-    txt += f"\n\nИнструкция по приготовлению:\n{meal['instructions']}"
-    txt += f"\n\nЭто блюдо содержит {meal['calories']} калорий. Приятного аппетита! 👨‍🍳"
-    
-    await call.message.edit_text(txt, reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⬅️ Назад к меню дня", callback_data=f"day_{parts[1]}")]]))
+    txt += f"\n\nПошаговая инструкция:\n{meal['instructions']}"
+    await call.message.edit_text(txt, reply_markup=InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(text="⬅️ Назад в меню дня", callback_data=f"day_{parts[1]}")]]))
 
 @dp.callback_query(F.data == "shop_7")
 async def shop_7(call: types.CallbackQuery, state: FSMContext):
-    data = await state.get_data()
-    ingredients = aggregate_ingredients(data['plan'])
-    
-    txt = "Вот твой полный список покупок на 7 дней. Я уже объединил все продукты за тебя, чтобы было удобнее:\n\n"
+    data = await state.get_data(); ingredients = aggregate_ingredients(data['plan'])
+    txt = "Ваш сводный список покупок на 7 дней. Все ингредиенты объединены для вашего удобства:\n\n"
     for name, info in ingredients.items():
         val = int(info['val']) if isinstance(info['val'], float) and info['val'].is_integer() else info['val']
         txt += f"— {name.capitalize()}: {val} {info['unit']}\n"
-    
-    txt += (
-        "\n📢 Подписывайся на наш канал с лайфхаками: " + TG_CHANNEL + 
-        "\n\n💎 А если хочешь попробовать магию ИИ (считать калории по фото, чат с диетологом и умные замены), "
-        "переходи в нашу Плюс-версию: " + PLUS_BOT
-    )
-    await call.message.answer(txt)
-    await call.answer()
+    txt += f"\n📢 Наш канал: {TG_CHANNEL}\n\n💎 Продвинутая Плюс-версия: {PLUS_BOT}"
+    await call.message.answer(txt); await call.answer()
 
 @dp.callback_query(F.data == "back_days")
 async def back_days(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     btns = [[InlineKeyboardButton(text=f"День {i}", callback_data=f"day_{i}")] for i in range(1, 8)]
     btns.append([InlineKeyboardButton(text="🛒 Список продуктов на 7 дней", callback_data="shop_7")])
-    await call.message.edit_text(f"Выбери день для просмотра меню (Твоя норма: {data['norma']} ккал):", reply_markup=InlineKeyboardMarkup(inline_keyboard=btns))
+    await call.message.edit_text(f"Выберите день (Ваша норма: {data['norma']} ккал):", reply_markup=InlineKeyboardMarkup(inline_keyboard=btns))
 
 # --- ЗАПУСК ---
 def run_flask():
