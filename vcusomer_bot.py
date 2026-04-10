@@ -34,7 +34,7 @@ if os.path.exists('recipes.json'):
         with open('recipes.json', 'r', encoding='utf-8') as f:
             ALL_RECIPES = json.load(f)
     except Exception as e:
-        logging.error(f"Оши��ка загрузки JSON: {e}")
+        logging.error(f"Ошибка загрузки JSON: {e}")
 
 # --- СОСТОЯНИЯ ---
 class Survey(StatesGroup):
@@ -47,7 +47,7 @@ class Survey(StatesGroup):
     weight = State()
     allergies = State()
 
-# --- УМНАЯ ЛОГИКА СУММИРОВАНИЯ ---
+# --- ЛОГИКА УМНОГО СУММИРОВАНИЯ ---
 def aggregate_ingredients(plan):
     shopping_list = {}
     for day in plan:
@@ -68,6 +68,7 @@ def aggregate_ingredients(plan):
                         if shopping_list[name]["unit"] == unit:
                             shopping_list[name]["val"] += val
                         else:
+                            # Если единицы разные (г и шт), пишем через плюс
                             shopping_list[name]["val"] = f"{shopping_list[name]['val']} {shopping_list[name]['unit']} + {val}"
                 else:
                     if name not in shopping_list:
@@ -85,19 +86,20 @@ def get_user_block(goal, activity):
 # --- ОБРАБОТЧИКИ ---
 
 @app.route('/')
-def index(): return "Бот Вкусомер онлайн"
+def index(): return "Бот Вкусомер запущен"
 
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message, state: FSMContext):
     await state.clear()
     welcome = (
-        "<b>Здравствуйте! Приветствую вас в системе Вкусомер.</b> 😊\n\n"
+        "<b>Здравствуйте! Приветствую вас в системе осознанного питания Вкусомер.</b> 😊\n\n"
         "Я ваш персональный помощник по планированию рациона. Моя цель — сделать ваше питание простым, вкусным и понятным. В этой версии я использую нашу базу проверенных рецептов, которые идеально сбалансированы экспертами.\n\n"
         "<b>Вот наш план действий:</b>\n"
         "1. Мы определим ваши параметры и рассчитаем точную индивидуальную норму калорий.\n"
         "2. Я подберу для вас разнообразное меню на семь дней.\n"
         "3. В конце вы получите полный список продуктов, в котором я сам объединю все ингредиенты (например, посчитаю общее число яиц или граммы мяса).\n\n"
-        "<b>Важное уточнение:</b> в нашей Плюс-версии вы сможете просто присылать фотографии своей еды, и Искусственный Интеллект сам определит калории, а также будет общаться с вами как личный психолог-диетолог.\n\n"
+        "<b>Кстати, о Плюс-версии:</b>\n"
+        "Если вы захотите еще больше возможностей — например, распознавание еды по одной фотографии или живой чат с ИИ-диетологом — вы сможете перейти в нашу Плюс-версию. Ссылку на нее я пришлю в конце нашего теста.\n\n"
         "Давайте приступим к созданию профиля! Укажите, пожалуйста, ваш пол: 👤"
     )
     kb = ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text="Мужской"), KeyboardButton(text="Женский")]], resize_keyboard=True)
@@ -115,7 +117,7 @@ async def proc_gender(message: types.Message, state: FSMContext):
 async def proc_goal(message: types.Message, state: FSMContext):
     await state.update_data(goal=message.text)
     if message.text in ["Похудеть", "Набрать массу"]:
-        await message.answer("Вдохновляющая цель! К какому весу в идеале вы стремитесь? Напишите, пожалуйста, число в килограммах: 🏁", reply_markup=ReplyKeyboardRemove())
+        await message.answer("Вдохновляющая цель! К какому весу в идеале вы стремитесь? Напишите, пожалуйста, только число в килограммах: 🏁", reply_markup=ReplyKeyboardRemove())
         await state.set_state(Survey.target_w)
     else:
         await state.set_state(Survey.activity)
@@ -132,7 +134,7 @@ async def proc_tw(message: types.Message, state: FSMContext):
 @dp.message(Survey.activity)
 async def proc_act(message: types.Message, state: FSMContext):
     await state.update_data(activity=message.text)
-    await message.answer("Укажите ваш полный возраст (количество лет). Напишите цифрой: 🎂", reply_markup=ReplyKeyboardRemove())
+    await message.answer("Укажите ваш полный возраст (количество лет). Напишите числом: 🎂", reply_markup=ReplyKeyboardRemove())
     await state.set_state(Survey.age)
 
 @dp.message(Survey.age)
@@ -181,7 +183,7 @@ async def proc_allg(call: types.CallbackQuery, state: FSMContext):
         res_text = (
             f"Ваша индивидуальная норма калорий составляет <b>{norma} ккал</b> в день.\n\n"
             "Я подготовил для вас оптимальное меню на семь дней из нашей базы рецептов. "
-            "Выберите день, чтобы увидеть список блюд и подробные инструкции:"
+            "Выберите день, чтобы увидеть список блюд и подробные рецепты приготовления:"
         )
         btns = [[InlineKeyboardButton(text=f"День {i}", callback_data=f"day_{i}")] for i in range(1, 8)]
         btns.append([InlineKeyboardButton(text="🛒 Список продуктов на 7 дней", callback_data="shop_7")])
@@ -201,7 +203,7 @@ async def show_day(call: types.CallbackQuery, state: FSMContext):
     btns = []
     for idx, m in enumerate(day_data['meals']):
         msg += f"🍴 {m['meal_type'].upper()}: {m['name']} ({m['calories']} ккал)\n"
-        btns.append([InlineKeyboardButton(text=f"Как готовить: {m['name']}", callback_data=f"rec_{day_num}_{idx}")])
+        btns.append([InlineKeyboardButton(text=f"Как готовать: {m['name']}", callback_data=f"rec_{day_num}_{idx}")])
     btns.append([InlineKeyboardButton(text="⬅️ Назад", callback_data="back_days")])
     await call.message.edit_text(msg, reply_markup=InlineKeyboardMarkup(inline_keyboard=btns), parse_mode="HTML")
 
@@ -242,4 +244,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-    
